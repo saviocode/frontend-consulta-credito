@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">
+  <span>Consulta de Créditos</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/">Por NFS-e</button>
+  <button mat-button routerLink="/credito">Por Número</button>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
+<app-spinner *ngIf="loadingService.loading$ | async"></app-spinner>
+
