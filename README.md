@@ -1,59 +1,140 @@
-# FrontendConsultaCredito
+```markdown
+# Consulta de Créditos (Frontend)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.11.
+## 🔎 Visão Geral
 
-## Development server
+Aplicação Angular para consumo da API de Consulta de Créditos.  
+Permite buscar por NFS-e ou por número de crédito, exibindo resultados em tabelas e cards com feedback de carregamento.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+## 🛠 Stack Tecnológico
+
+- **Angular 16+**  
+- **TypeScript**  
+- **Angular Material** 
+- **RxJS**  
+- **SCSS**  
+- **Docker** (containerização opcional)  
+
+---
+
+## ✔️ Pré-requisitos
+
+- Node.js (v16 LTS ou superior)  
+- npm ou yarn  
+- API de backend rodando em `http://localhost:8080` (por padrão)  
+
+---
+
+## 📁 Estrutura de Pastas
+
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+frontend/
+├── src/
+│   ├── app/
+│   │   ├── core/
+│   │   │   └── api.service.ts        # Chamadas HTTP
+│   │   ├── shared/
+│   │   │   ├── models/               # Interfaces de DTO
+│   │   │   └── spinner/              # Spinner global
+│   │   ├── consulta/
+│   │   │   ├── busca-nfse/           # Componentes de busca por NFS-e
+│   │   │   └── busca-credito/        # Componentes de busca por Crédito
+│   │   └── app.module.ts
+│   ├── assets/
+│   ├── environments/
+│   │   ├── environment.ts            # URL da API Dev
+│   │   └── environment.prod.ts       # URL da API Prod
+│   ├── index.html
+│   └── styles.scss                   # Variáveis e tema global
+├── angular.json
+├── package.json
+└── tsconfig.json
 
-## Code scaffolding
+````
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
+## 🚀 Como Rodar em Desenvolvimento
+
+1. Clone o repositório e instale dependências:
+   ```bash
+   cd frontend
+   npm install
+````
+
+2. Ajuste a URL da API, se necessário, em `src/environments/environment.ts`:
+
+   ```ts
+   export const environment = {
+     production: false,
+     apiUrl: 'http://localhost:8080/api'
+   };
+   ```
+3. Inicie o servidor de desenvolvimento:
+
+   ```bash
+   ng serve
+   ```
+4. Acesse `http://localhost:4200` no navegador.
+
+---
+
+## 🎨 Angular Material
+
+Utilizamos Material para componentes visuais:
+
+* **Toolbar**: cabeçalho com navegação
+* **MatCard**: agrupa formulários e resultados
+* **MatFormField + MatInput**: campos de busca com validação
+* **MatTable**: exibição de listas de créditos
+* **MatProgressSpinner**: indicação de carregamento
+* **MatSnackBar**: notificações de erro
+
+Todos os módulos estão importados em `AppModule` e `ConsultaModule`.
+
+---
+
+## 🐳 Docker (Opcional)
+
+Você pode gerar uma imagem Docker standalone:
+
+```dockerfile
+# Dockerfile
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build -- --configuration=production
+
+FROM nginx:alpine
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /app/dist/frontend-consulta-credito /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1. Build da imagem:
 
-```bash
-ng generate --help
-```
+   ```bash
+   docker build -t frontend-consulta-credito .
+   ```
+2. Run do container:
 
-## Building
+   ```bash
+   docker run -d -p 4200:80 frontend-consulta-credito
+   ```
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## 📘 Observações Finais
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+* **CORS**: garanta que o backend permita origem `http://localhost:4200`
+* **Variáveis de Ambiente**: configure `environment.prod.ts` para deploy
+* **Deploy**: o conteúdo gerado em `dist/` pode ser servido por qualquer CDN ou servidor web
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
