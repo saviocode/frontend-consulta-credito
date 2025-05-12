@@ -1,0 +1,30 @@
+<!-- src/app/consulta/components/busca-credito/busca-credito.component.html -->
+<mat-card class="consulta-card">
+  <form [formGroup]="form" (ngSubmit)="buscar()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Número do Crédito</mat-label>
+      <input matInput formControlName="numeroCredito" placeholder="Ex: 123456" />
+      <mat-error *ngIf="form.get('numeroCredito')?.hasError('required')">
+        Campo obrigatório
+      </mat-error>
+      <mat-error *ngIf="form.get('numeroCredito')?.hasError('pattern')">
+        Deve ter exatamente 6 dígitos
+      </mat-error>
+    </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="form.invalid || skeletonLoading">
+        Buscar
+      </button>
+     
+  </form>
+
+  <mat-error *ngIf="error">{{ error }}</mat-error>
+
+  <mat-card *ngIf="credito" class="result-card">
+    <p><strong>Nº Crédito:</strong> {{ credito.numeroCredito }}</p>
+    <p><strong>Data Constituição:</strong> {{ credito.dataConstituicao }}</p>
+    <p><strong>Valor ISSQN:</strong> {{ credito.valorIssqn | number:'1.2-2' }}</p>
+    <p><strong>Tipo:</strong> {{ credito.tipoCredito }}</p>
+  </mat-card>
+</mat-card>
