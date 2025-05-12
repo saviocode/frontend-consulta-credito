@@ -16,7 +16,7 @@
               [disabled]="form.invalid || skeletonLoading">
         Buscar
       </button>
-     
+
   </form>
 
   <mat-error *ngIf="error">{{ error }}</mat-error>
@@ -26,5 +26,11 @@
     <p><strong>Data Constituição:</strong> {{ credito.dataConstituicao }}</p>
     <p><strong>Valor ISSQN:</strong> {{ credito.valorIssqn | number:'1.2-2' }}</p>
     <p><strong>Tipo:</strong> {{ credito.tipoCredito }}</p>
+    <p><strong>Simples Nacional:</strong> {{ credito.simplesNacional }}</p>
+    <p><strong>Alíquota:</strong> {{ credito.aliquota }}</p>
+    <p><strong>Valor Faturado:</strong> {{ credito.valorFaturado }}</p>
+    <p><strong>Valor Dedução:</strong> {{ credito.valorDeducao }}</p>
+    <p><strong>Base Cálculo:</strong> {{ credito.baseCalculo }}</p>
+
   </mat-card>
 </mat-card>
